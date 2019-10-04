@@ -21,7 +21,7 @@ Character Substitution Chart
 
 
 //INPUT: Raw string input
-string evaluate(string input);
+int evaluate(string input);
 //OUTPUT: Finished Problem
 
 //INPUT:Raw string input
@@ -52,44 +52,48 @@ int useOperator(int a, char operand, int b = 0);
 
 int main() {
 	cout << "Hello world UWU \n";
+	
+	try {
+		cout << "Expression 2: ";
+		string input = "2^2 + 2^2 ";
+		cout << evaluate(input) << endl;
 
-	cout << "Expression List\n";
-	cout << "Expression 1: ";
-	string input = "1+2*3 != 4*5  ";
-	cout << evaluate(input) << endl;
-	cout << "Expression 2: ";
-	input = "2+2^2*3 ";
-	cout << evaluate(input) << endl;
-	cout << "Expression 3: ";
-	input = "1==2 ";
-	cout << evaluate(input) << endl;
-	cout << "Expression 4: ";
-	input = "1+3 > 2 ";
-	cout << evaluate(input) << endl;
-	cout << "Expression 5: ";
-	input = "(4>=4) && 0  ";
-	cout << evaluate(input) << endl;
-	cout << "Expression 6: ";
-	input = "(1+2)*3 ";
-	cout << evaluate(input) << endl;
-	cout << "Expression 7: ";
-	input = "++++2-5*(3^2) ";
-	cout << evaluate(input) << endl;
-	cout << "Expression 8: ";
-	input = "----2----5*(3^2) ";
-	cout << evaluate(input) << endl;
+		cout << "Expression 3: ";
+		input = "2==2==1==1 ";
+		cout << evaluate(input) << endl;
+		cout << (1 == 2) << endl;
 
+		cout << "Expression 4: ";
+		input = "1+3 > 2 ";
+		cout << evaluate(input) << endl;
+		cout << (1 + 3 > 2) << endl;
+		cout << "Expression 5: ";
+		input = "(4>=4) && 0  ";
+		cout << evaluate(input) << endl;
+		cout << "Expression 6: ";
+		input = "(1+2)*3 ";
+		cout << evaluate(input) << endl;
+		cout << "Expression 6: ";
+		input = "++++2-5*(3^2)  ";
+		cout << evaluate(input) << endl;
+	}
+	catch (...) {
+		cout << "Something broke, idk what. lol.";
+	}
+	
 }
 
 
 //TODO //pushtostackandcalculate
 //INPUT: Raw string input
-string evaluate(string input)
+int evaluate(string input)
 {
 	string condensedInput = stringCondenser(input);
 	cout << condensedInput <<endl;
 	string spacedInDigits = stringSpacer(condensedInput);
-	return spacedInDigits;
+	cout << spacedInDigits << endl;
+	int a = pushToStacksAndCalculate(spacedInDigits);
+	return a;
 }
 //OUTPUT:Finished Problem
 
@@ -124,20 +128,37 @@ string stringSpacer(string input) {
 				outputString = outputString + input[i] + ' '; //yes space
 			}
 		}
+		
 		else if (isOperator(input[i]) && (isdigit(input[i+1]))) {//10
 			outputString = outputString + input[i] + ' ';
 		}
+		
 		else if (isOperator(input[i]) && (isOperator(input[i + 1]))) {//11
-			if ((i == 0||isOperator(input[i - 1])) && (input[i] == input[1 + i])) {
+		//case of comparison of <= or >= or != or ==
+		if (input[i] == '>' && input[i + 1] == '=') {
+			outputString = outputString + 'G' + ' ';
+			i++;
+		}
+		else if (input[i] == '<' && input[i + 1] == '=') {
+			outputString = outputString + 'L' + ' ';
+			i++;
+		}
+		else if (input[i] == '!' && input[i + 1] == '=') {
+			outputString = outputString + 'N' + ' ';
+			i++;
+		}
+		else if (input[i] == '=' && input[i + 1] == '=') {
+			outputString = outputString + 'E' + ' ';
+			i++;
+		}
+		//end	
+		else if ((i == 0||isOperator(input[i - 1])) && (input[i] == input[1 + i])) {
 				switch (input[i]) {
 				case '-':
 					outputString = outputString + 'D' + ' ';
 					break;
 				case '+':
 					outputString = outputString + 'I' + ' ';
-					break;
-				case '=':
-					outputString = outputString + 'E' + ' ';
 					break;
 				case '&':
 					outputString = outputString + 'A' + ' ';
@@ -148,20 +169,7 @@ string stringSpacer(string input) {
 				}
 				i++;
 			}
-			//case of comparison of <= or >= or !=
-			else if (input[i] == '>' && input[i+1] == '=') {
-				outputString = outputString + 'G' + ' ';
-				i++;
-			}
-			else if (input[i] == '<' && input[i+1] == '=') {
-				outputString = outputString + 'L' + ' ';
-				i++;
-			}
-			else if (input[i] == '!' && input[i + 1] == '=') {
-				outputString = outputString + 'N' + ' ';
-				i++;
-			}
-			//end
+			
 			else {
 				outputString = outputString + input[i] + ' ';
 			}
@@ -191,11 +199,95 @@ bool isOperator(char input) {
 //INPUT: Formatted String with character Substitiuion
 int pushToStacksAndCalculate(string input) {
 	stack <int> numbers;
-	stack <string> operators;
+	stack <char> operators;
+	int x, y;
+	char op;
 
+	for (int i = 0; i < input.length(); i++) {
+		if (input[i] == ' ') {
+			continue;
+		}
+		else if (input[i] == '(') {
+			operators.push(input[i]);
+		}
+		else if (isdigit(input[i])) {
+			int val = 0;
+			while (i < input.length() &&
+				isdigit(input[i]))
+			{
+				val = (val * 10) + (input[i] - '0');
+				i++;
+			}
 
+			numbers.push(val);
+		}
+		
+		else if (input[i] == ')') {
+			while (operators.top() != '(' && (operators.size() != 0)) {
+				op = operators.top();
+				operators.pop();
+				x = numbers.top();
+				numbers.pop();
+				y = numbers.top();
+				numbers.pop();
+				numbers.push(useOperator(y, op, x));
+			}
+			if (operators.empty()) {
+				cout << "Expression can't start with a closing parenthesis @0";
+				return -1;
+			}
+			operators.pop();
+		}
+		else {
+			if (precedenceLevel(input[i]) == 8) {
+				operators.push(input[i]);
+				continue;
 
-	return 0;
+			}
+			else{
+				while (!operators.empty() && (precedenceLevel(operators.top()) >= precedenceLevel(input[i]))) {
+					if (precedenceLevel(operators.top()) == 8) {
+						op = operators.top();
+						operators.pop();
+						x = numbers.top();
+						numbers.pop();
+						numbers.push(useOperator(x, op));
+					}
+					else {
+						op = operators.top();
+						operators.pop();
+						x = numbers.top();
+						numbers.pop();
+						y = numbers.top();
+						numbers.pop();
+						numbers.push(useOperator(y, op, x));
+					}
+				}
+				operators.push(input[i]);
+			}
+		}
+	}
+	while (!operators.empty()) {
+
+		op = operators.top();
+		operators.pop();
+		if (precedenceLevel(op) == 8) {
+			y = numbers.top();
+			numbers.pop();
+			numbers.push(useOperator(y, op));
+		}
+		else {
+			x = numbers.top();
+			numbers.pop();
+			y = numbers.top();
+			numbers.pop();
+			numbers.push(useOperator(y, op, x));
+		}
+	}
+
+	int correct = numbers.top();
+	numbers.pop();
+	return correct;
 }
 //OUTPUT: Finished Problem
 
@@ -231,7 +323,7 @@ int precedenceLevel(char input) {
 }
 //OUTPUT: Power level
 
-//TODO
+//COMPLETE
 //INPUT: 1-2 numbers and an job to do
 int useOperator(int a, char operand, int b) {
 	switch (operand) {
@@ -247,7 +339,7 @@ int useOperator(int a, char operand, int b) {
 	case '-': return (-a);
 	case '^': return (pow(a,b));
 	case '*': return (a*b);
-	case '/': return (a/b);
+	case '/': return (a / b);
 	case '%': return (a%b);
 	case '+': return (a+b);
 	case '~': return (a-b);

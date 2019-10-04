@@ -1,9 +1,10 @@
 ﻿  Source.cpp
-C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(105,20): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(118,20): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(189,20): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(206,20): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(215,13): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(340,23): warning C4244:  'return': conversion from 'double' to 'int', possible loss of data
-C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(340,23): warning C4244: C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(355) : warning C4715: 'useOperator': not all control paths return a value
+C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(89,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(102,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(173,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(190,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(199,13): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(324,23): warning C4244:  'return': conversion from 'double' to 'int', possible loss of data
+C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(347,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(347,20): warning C4018: C:\Users\jjbar\source\repos\StackInfixSolverv2\StackInfixSolverv2\Source.cpp(339) : warning C4715: 'useOperator': not all control paths return a value
   StackInfixSolverv2.vcxproj -> C:\Users\jjbar\source\repos\StackInfixSolverv2\Debug\StackInfixSolverv2.exe

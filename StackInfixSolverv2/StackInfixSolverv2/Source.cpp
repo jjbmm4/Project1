@@ -7,7 +7,6 @@ using namespace std;
 
 /*
 Character Substitution Chart
-
 -- D
 ++ I
 == E
@@ -48,39 +47,20 @@ int precedenceLevel(char input);
 int useOperator(int a, char operand, int b = 0);
 //OUTPUT: finished math
 
+//INPUT: Formatted String
+void errorWithFormat(string input);
+//OUTPUT: Tested Formatted String
 
 
 int main() {
-	cout << "Hello world UWU \n";
-	
-	try {
-		cout << "Expression 2: ";
-		string input = "2^2 + 2^2 ";
-		cout << evaluate(input) << endl;
 
-		cout << "Expression 3: ";
-		input = "2==2==1==1 ";
-		cout << evaluate(input) << endl;
-		cout << (1 == 2) << endl;
 
-		cout << "Expression 4: ";
-		input = "1+3 > 2 ";
-		cout << evaluate(input) << endl;
-		cout << (1 + 3 > 2) << endl;
-		cout << "Expression 5: ";
-		input = "(4>=4) && 0  ";
-		cout << evaluate(input) << endl;
-		cout << "Expression 6: ";
-		input = "(1+2)*3 ";
-		cout << evaluate(input) << endl;
-		cout << "Expression 6: ";
-		input = "++++2-5*(3^2)  ";
-		cout << evaluate(input) << endl;
-	}
-	catch (...) {
-		cout << "Something broke, idk what. lol.";
-	}
-	
+
+	cout << "Expression 1: ";
+	string input = "++++2-5*(3^2)";
+	cout << evaluate(input) << endl;
+
+
 }
 
 
@@ -89,9 +69,13 @@ int main() {
 int evaluate(string input)
 {
 	string condensedInput = stringCondenser(input);
-	cout << condensedInput <<endl;
+	cout << condensedInput << endl;
 	string spacedInDigits = stringSpacer(condensedInput);
 	cout << spacedInDigits << endl;
+
+	string testerString = stringCondenser(spacedInDigits);
+	errorWithFormat(testerString);
+
 	int a = pushToStacksAndCalculate(spacedInDigits);
 	return a;
 }
@@ -116,7 +100,7 @@ string stringCondenser(string input) {
 string stringSpacer(string input) {
 	string outputString;
 	for (int i = 0; i < input.size(); i++) {
-		if (isdigit(input[i]) && isdigit(input[i+1])) {//00
+		if (isdigit(input[i]) && isdigit(input[i + 1])) {//00
 			outputString += input[i]; //no space
 		}
 		else if (isdigit(input[i]) && (isOperator(input[i + 1]))) {//01
@@ -128,31 +112,31 @@ string stringSpacer(string input) {
 				outputString = outputString + input[i] + ' '; //yes space
 			}
 		}
-		
-		else if (isOperator(input[i]) && (isdigit(input[i+1]))) {//10
+
+		else if (isOperator(input[i]) && (isdigit(input[i + 1]))) {//10
 			outputString = outputString + input[i] + ' ';
 		}
-		
+
 		else if (isOperator(input[i]) && (isOperator(input[i + 1]))) {//11
 		//case of comparison of <= or >= or != or ==
-		if (input[i] == '>' && input[i + 1] == '=') {
-			outputString = outputString + 'G' + ' ';
-			i++;
-		}
-		else if (input[i] == '<' && input[i + 1] == '=') {
-			outputString = outputString + 'L' + ' ';
-			i++;
-		}
-		else if (input[i] == '!' && input[i + 1] == '=') {
-			outputString = outputString + 'N' + ' ';
-			i++;
-		}
-		else if (input[i] == '=' && input[i + 1] == '=') {
-			outputString = outputString + 'E' + ' ';
-			i++;
-		}
-		//end	
-		else if ((i == 0||isOperator(input[i - 1])) && (input[i] == input[1 + i])) {
+			if (input[i] == '>' && input[i + 1] == '=') {
+				outputString = outputString + 'G' + ' ';
+				i++;
+			}
+			else if (input[i] == '<' && input[i + 1] == '=') {
+				outputString = outputString + 'L' + ' ';
+				i++;
+			}
+			else if (input[i] == '!' && input[i + 1] == '=') {
+				outputString = outputString + 'N' + ' ';
+				i++;
+			}
+			else if (input[i] == '=' && input[i + 1] == '=') {
+				outputString = outputString + 'E' + ' ';
+				i++;
+			}
+			//end	
+			else if ((i == 0 || isOperator(input[i - 1])) && (input[i] == input[1 + i])) {
 				switch (input[i]) {
 				case '-':
 					outputString = outputString + 'D' + ' ';
@@ -169,7 +153,7 @@ string stringSpacer(string input) {
 				}
 				i++;
 			}
-			
+
 			else {
 				outputString = outputString + input[i] + ' ';
 			}
@@ -185,7 +169,7 @@ string stringSpacer(string input) {
 //COMPLETE(could be better)
 //INPUT: Char that might be operator
 bool isOperator(char input) {
-	string operators = "!+-^*/%<>+&|()=";
+	string operators = "!+-^*/%<>+&|()=DIEAOGLN";
 	for (int i = 0; i < operators.size(); i++) {
 		if (input == operators[i]) {
 			return true;
@@ -221,7 +205,7 @@ int pushToStacksAndCalculate(string input) {
 
 			numbers.push(val);
 		}
-		
+
 		else if (input[i] == ')') {
 			while (operators.top() != '(' && (operators.size() != 0)) {
 				op = operators.top();
@@ -244,7 +228,7 @@ int pushToStacksAndCalculate(string input) {
 				continue;
 
 			}
-			else{
+			else {
 				while (!operators.empty() && (precedenceLevel(operators.top()) >= precedenceLevel(input[i]))) {
 					if (precedenceLevel(operators.top()) == 8) {
 						op = operators.top();
@@ -337,20 +321,83 @@ int useOperator(int a, char operand, int b) {
 	case 'I': return (a + 1);
 	case 'D': return (a - 1);
 	case '-': return (-a);
-	case '^': return (pow(a,b));
-	case '*': return (a*b);
+	case '^': return (pow(a, b));
+	case '*': return (a * b);
 	case '/': return (a / b);
-	case '%': return (a%b);
-	case '+': return (a+b);
-	case '~': return (a-b);
-	case '>': return (a>b);
-	case '<': return (a<b);
-	case 'G': return (a>=b);
-	case 'L': return (a<=b);
-	case 'E': return (a==b);
-	case 'N': return (a!=b);
-	case 'A': return (a&&b);
-	case 'O': return (a||b);
+	case '%': return (a % b);
+	case '+': return (a + b);
+	case '~': return (a - b);
+	case '>': return (a > b);
+	case '<': return (a < b);
+	case 'G': return (a >= b);
+	case 'L': return (a <= b);
+	case 'E': return (a == b);
+	case 'N': return (a != b);
+	case 'A': return (a && b);
+	case 'O': return (a || b);
 	}
 }
 //OUTPUT: finished math
+
+
+//INPUT:formatted string
+void errorWithFormat(string input) {
+
+
+	for (int i = 0; i < input.size(); i++) {
+
+		if (input[0] == ')') {
+			cout << "Expression cant start with a closing parenthesis";
+			exit(0);
+			system("pause");
+		}
+		else if (isOperator(input[0])) {
+			if (input[0] != '(') {
+				if (precedenceLevel(input[0]) < 8) {
+					cout << "Cant start with a binary operator" << endl;
+					exit(0);
+					system("pause");
+				}
+			}
+		}
+
+
+		if (input[i] == '/') {
+			if (input[i + 1] == '0') {
+				cout << "devide by zero error";
+				exit(0);
+				system("pause");
+			}
+		}
+
+		if (input[i] == '(' || input[i] == ')' || input[i + 1] == '(' || input[i + 1] == ')') {
+			continue;
+		}
+		else if (isOperator(input[i])) {
+
+			if (isOperator(input[i + 1])) {
+
+				if (precedenceLevel(input[i]) < 8) {
+					if (precedenceLevel(input[i + 1]) < 8) {
+						cout << "Cant have two binary operators in a row" << endl;
+						exit(0);
+						system("pause");
+					}
+				}
+				else if ((precedenceLevel(input[i]) == 8) && (precedenceLevel(input[i + 1]) < 8)) {
+					cout << "A unary operand can’t be followed by a binary operator" << endl;
+					exit(0);
+					system("pause");
+				}
+			}
+
+		}
+
+
+
+	}
+
+}
+
+//OUTPUT: i couldnt come up with a good way to handle errors well. this is the best i could think of. sorry!
+
